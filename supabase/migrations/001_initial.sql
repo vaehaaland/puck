@@ -1,5 +1,5 @@
--- Enable UUID extension
-create extension if not exists "uuid-ossp";
+-- Enable UUID extension (no longer needed for gen_random_uuid, kept for compat)
+-- create extension if not exists "uuid-ossp";
 
 -- ─── PROFILES ────────────────────────────────────────────────────────────────
 create table public.profiles (
@@ -42,7 +42,7 @@ alter table public.coach_athletes enable row level security;
 
 -- ─── PROGRAMS ────────────────────────────────────────────────────────────────
 create table public.programs (
-  id          uuid primary key default uuid_generate_v4(),
+  id          uuid primary key default gen_random_uuid(),
   name        text not null,
   description text,
   coach_id    uuid not null references public.profiles(id) on delete cascade,
@@ -54,7 +54,7 @@ alter table public.programs enable row level security;
 
 -- ─── PROGRAM ASSIGNMENTS ─────────────────────────────────────────────────────
 create table public.program_assignments (
-  id          uuid primary key default uuid_generate_v4(),
+  id          uuid primary key default gen_random_uuid(),
   program_id  uuid not null references public.programs(id) on delete cascade,
   athlete_id  uuid not null references public.profiles(id) on delete cascade,
   assigned_at timestamptz not null default now(),
@@ -66,7 +66,7 @@ alter table public.program_assignments enable row level security;
 
 -- ─── SESSIONS ────────────────────────────────────────────────────────────────
 create table public.sessions (
-  id                      uuid primary key default uuid_generate_v4(),
+  id                      uuid primary key default gen_random_uuid(),
   program_id              uuid not null references public.programs(id) on delete cascade,
   name                    text not null,
   order_index             int not null default 0,
@@ -78,7 +78,7 @@ alter table public.sessions enable row level security;
 
 -- ─── SESSION EXERCISES ───────────────────────────────────────────────────────
 create table public.session_exercises (
-  id               uuid primary key default uuid_generate_v4(),
+  id               uuid primary key default gen_random_uuid(),
   session_id       uuid not null references public.sessions(id) on delete cascade,
   exercise_name    text not null,
   order_index      int not null default 0,
@@ -94,7 +94,7 @@ alter table public.session_exercises enable row level security;
 
 -- ─── WORKOUT LOGS ────────────────────────────────────────────────────────────
 create table public.workout_logs (
-  id           uuid primary key default uuid_generate_v4(),
+  id           uuid primary key default gen_random_uuid(),
   athlete_id   uuid not null references public.profiles(id) on delete cascade,
   session_id   uuid references public.sessions(id) on delete set null,
   program_id   uuid references public.programs(id) on delete set null,
@@ -107,7 +107,7 @@ alter table public.workout_logs enable row level security;
 
 -- ─── EXERCISE LOGS ───────────────────────────────────────────────────────────
 create table public.exercise_logs (
-  id              uuid primary key default uuid_generate_v4(),
+  id              uuid primary key default gen_random_uuid(),
   workout_log_id  uuid not null references public.workout_logs(id) on delete cascade,
   exercise_name   text not null,
   set_number      int not null,
@@ -123,7 +123,7 @@ alter table public.exercise_logs enable row level security;
 
 -- ─── RUNS ────────────────────────────────────────────────────────────────────
 create table public.runs (
-  id               uuid primary key default uuid_generate_v4(),
+  id               uuid primary key default gen_random_uuid(),
   athlete_id       uuid not null references public.profiles(id) on delete cascade,
   date             date not null,
   distance_km      numeric(6,2) not null,
@@ -136,7 +136,7 @@ alter table public.runs enable row level security;
 
 -- ─── PERSONAL RECORDS ────────────────────────────────────────────────────────
 create table public.personal_records (
-  id              uuid primary key default uuid_generate_v4(),
+  id              uuid primary key default gen_random_uuid(),
   athlete_id      uuid not null references public.profiles(id) on delete cascade,
   exercise_name   text not null,
   weight_kg       numeric(6,2) not null,
