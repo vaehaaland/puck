@@ -23,6 +23,7 @@ export function SignupForm() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
 
   const {
     register,
@@ -37,7 +38,7 @@ export function SignupForm() {
     setLoading(true);
     setError(null);
     const supabase = createClient();
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email: data.email,
       password: data.password,
       options: {
@@ -48,11 +49,26 @@ export function SignupForm() {
     if (error) {
       setError(error.message);
       setLoading(false);
+    } else if (data.user && !data.user.email_confirmed_at) {
+      // Email confirmation required — user is not yet logged in
+      setEmailSent(true);
+      setLoading(false);
     } else {
       router.push("/dashboard");
       router.refresh();
     }
   };
+
+  if (emailSent) {
+    return (
+      <div className="rounded-md bg-muted px-4 py-3 text-sm text-center space-y-1">
+        <p className="font-medium">Check your email</p>
+        <p className="text-muted-foreground">
+          We sent a confirmation link to your email address. Click it to activate your account.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
