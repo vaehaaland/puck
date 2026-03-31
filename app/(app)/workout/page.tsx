@@ -30,6 +30,15 @@ export default async function WorkoutPage() {
     <div className="p-4 lg:p-8 space-y-6 max-w-3xl mx-auto">
       <h2 className="text-2xl font-bold">Workout</h2>
 
+      {/* TODO [FREE-WORKOUT]: Add a prominent "Start Free Workout" button above (or below)
+          the program sessions. Clicking it should navigate to a new route, e.g.
+          /workout/free, that skips the session lookup and instead renders WorkoutSession
+          with an empty exercises list and no session_id. The user can then add exercises
+          on the fly via AddExerciseModal, log sets, and finish normally. The workout_logs
+          row should be created with session_id = null to distinguish free workouts from
+          program-based ones. The recent workouts list already handles null sessions
+          (see "Free workout" fallback on line 104). */}
+
       {/* Program sessions */}
       {assignments && assignments.length > 0 ? (
         assignments.map((assignment) => {

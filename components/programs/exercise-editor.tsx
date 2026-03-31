@@ -17,6 +17,11 @@ export function ExerciseEditor({ exercise, index, onChange, onRemove }: Exercise
     <div className="border rounded-md p-3 space-y-3">
       <div className="flex items-center gap-2">
         <span className="text-xs text-muted-foreground w-5 shrink-0">{index + 1}.</span>
+        {/* TODO [EXERCISE-SEARCH]: Replace this plain Input with a combobox/autocomplete
+            that searches the same COMMON_EXERCISES list used in AddExerciseModal.
+            Typing should filter suggestions in a dropdown; pressing Enter or clicking
+            a suggestion fills the field. If no match is found the typed value is kept
+            as-is so custom exercises are still supported. */}
         <Input
           value={exercise.exercise_name}
           onChange={(e) => onChange({ exercise_name: e.target.value })}

@@ -20,6 +20,14 @@ const programSchema = z.object({
 });
 type ProgramFormData = z.infer<typeof programSchema>;
 
+// TODO [PROGRAM-CYCLES]: Add a WeekDraft concept so sessions are grouped by week,
+// and each week has a type: "normal" | "deload". The program builder should let
+// coaches configure a cycle length (e.g. 4 weeks) and mark which weeks are deload.
+// On deload weeks, target weights/RPE for all exercises in that week's sessions
+// should be automatically scaled down (e.g. 60-70% of the working weight from the
+// previous week). The DB will need a `week_number` and `week_type` column on sessions,
+// or a separate `program_weeks` table. The program save flow in `onSubmit` needs
+// to persist week metadata alongside sessions.
 interface SessionDraft {
   id: string;
   name: string;
@@ -160,6 +168,10 @@ export function ProgramBuilder({ coachId }: ProgramBuilderProps) {
         </CardContent>
       </Card>
 
+      {/* TODO [PROGRAM-CYCLES]: Render a week selector here so coaches can switch between
+          weeks before adding/editing sessions. Add a "Add Week" button and a toggle per
+          week to mark it as a deload week. Sessions below should be scoped to the
+          currently selected week. */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="font-semibold">Sessions</h3>

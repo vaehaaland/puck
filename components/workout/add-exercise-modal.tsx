@@ -6,6 +6,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 
+// TODO [EXERCISE-SEARCH]: Expand this list with a comprehensive set of predefined exercises
+// covering major movement patterns: squat, hinge, push, pull, carry, core, isolation.
+// Consider grouping by category (e.g. "Barbell", "Dumbbell", "Bodyweight", "Machine")
+// so the search UI can optionally show category headers.
 const COMMON_EXERCISES = [
   "Back Squat", "Front Squat", "Romanian Deadlift", "Deadlift", "Bench Press",
   "Overhead Press", "Pull-ups", "Barbell Row", "Hip Thrust", "Leg Press",
@@ -45,6 +49,10 @@ export function AddExerciseModal({ open, onClose, onAdd }: AddExerciseModalProps
           autoFocus
         />
 
+        {/* TODO [EXERCISE-SEARCH]: When the search query matches the start of a predefined
+            exercise exactly, surface that match at the top. Also consider showing the
+            typed value itself as a "Use '<query>'" option inline so the user doesn't
+            need to scroll down to the custom section — especially useful on mobile. */}
         <div className="max-h-48 overflow-y-auto space-y-1">
           {filtered.slice(0, 8).map((name) => (
             <button

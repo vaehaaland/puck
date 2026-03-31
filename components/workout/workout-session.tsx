@@ -46,6 +46,12 @@ interface LoggedSet {
   is_pr: boolean;
 }
 
+// TODO [FREE-WORKOUT]: Make `session` optional (or introduce a FreeWorkoutSession
+// variant) so WorkoutSession can be mounted without a predefined session. When
+// session is null/undefined: start with an empty exercise list, show "Add Exercise"
+// as the primary CTA, and pass session_id = null when inserting workout_logs.
+// The rest of the logging flow (handleLogSet, PR detection, handleFinish) can stay
+// unchanged since it already operates on the loggedSets state array.
 interface WorkoutSessionProps {
   session: Session;
   athleteId: string;
